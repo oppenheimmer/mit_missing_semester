@@ -226,8 +226,7 @@ $ cd /sys/class/backlight/thinkpad_screen
 $ cat max_brightness
   1060
 $ sudo echo 3 > brightness
-An error occurred while redirecting file 'brightness'
-open: Permission denied
+  An error occurred while redirecting file 'brightness' open: Permission denied
 ```
 
 This error may come as a surprise! After all, we ran the command with `sudo`. This is an important thing takeaway: 
@@ -253,7 +252,6 @@ $ echo 1060 | sudo tee brightness
 
 Since the `tee` program is the one to open the `/sys` file for writing, and is running as `root`, the permissions all work out. You can control all sorts of fun and useful things through `/sys`, such as the state of various system LEDs and keys.
 
-
 **Exercise:**
 
 - Use touch to create a new file called `semester` in `/tmp/missing`.
@@ -278,13 +276,14 @@ $ echo 'curl --head --silent https://missing.csail.mit.edu' >> missing
 
 - Try executing the file:
 
-> It will not work becuase 'x' bit is missing
+```console
+It will not work becuase 'x' bit is missing
+```
 
 - Does `sh missing` work? Why?
 
-> Yes. But `./missing` will not work. It can be set to execute by `chmod +x missing`. If you make your file executable and run it with `./file`, then the kernel will see that the first two bytes are `#!`, which means it's a script-file. The kernel will then use the rest of the line as the interpreter, and pass the file as its first argument. So, it runs `/bin/bash file`. For `bash/sh/zsh` to execute the script, it only needs to be able to read the file. As long as bash script is executable, you can also run bash with the script file as argument.
+> Yes. But `./missing` will not work. It can be set to execute by `chmod +x missing`. If you make your file executable and run it with `./file`, then the kernel will see that the first two bytes are `#!`, which means it's a script-file. The kernel will then use the rest of the line as the interpreter, and pass the file as its first argument. So, it runs `/bin/bash file`. For shell to execute the script, it only needs to be able to read the file. As long as bash script is designed to be executable, you can also run bash with the script as argument. To really prohibit execution conversely, take away the read bit. When you are running `sh file.sh`, you are executing `sh` - which takes the file as argument. File permissions on `x` have effect only if you execute the script itself.
 
-> To really prohibit execution conversely, take away the read bit. When you are running `sh file.sh`, you are executing `sh` - which takes the file as argument. File permissions on `x` have effect only if you execute the script itself.
 
 
 - Use pipes to write the “last modified” date
